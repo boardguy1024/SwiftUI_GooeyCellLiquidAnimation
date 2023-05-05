@@ -9,16 +9,20 @@
 /* Begin PBXBuildFile section */
 		2D0840952A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0840942A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimationApp.swift */; };
 		2D0840972A05018B0013AABE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0840962A05018B0013AABE /* ContentView.swift */; };
-		2D0840992A05018D0013AABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D0840982A05018D0013AABE /* Assets.xcassets */; };
 		2D08409C2A05018D0013AABE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D08409B2A05018D0013AABE /* Preview Assets.xcassets */; };
+		2D0840A32A0502190013AABE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D0840A22A0502190013AABE /* Assets.xcassets */; };
+		2D0840A72A05028E0013AABE /* Promotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0840A62A05028E0013AABE /* Promotion.swift */; };
+		2D0840A92A05031D0013AABE /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0840A82A05031D0013AABE /* Home.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2D0840912A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftUI_GooeyCellLiquidAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D0840942A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUI_GooeyCellLiquidAnimationApp.swift; sourceTree = "<group>"; };
 		2D0840962A05018B0013AABE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		2D0840982A05018D0013AABE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D08409B2A05018D0013AABE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2D0840A22A0502190013AABE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2D0840A62A05028E0013AABE /* Promotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promotion.swift; sourceTree = "<group>"; };
+		2D0840A82A05031D0013AABE /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,9 +55,11 @@
 		2D0840932A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				2D0840A42A0502770013AABE /* View */,
+				2D0840A52A05027E0013AABE /* Model */,
 				2D0840942A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimationApp.swift */,
 				2D0840962A05018B0013AABE /* ContentView.swift */,
-				2D0840982A05018D0013AABE /* Assets.xcassets */,
+				2D0840A22A0502190013AABE /* Assets.xcassets */,
 				2D08409A2A05018D0013AABE /* Preview Content */,
 			);
 			path = SwiftUI_GooeyCellLiquidAnimation;
@@ -65,6 +71,22 @@
 				2D08409B2A05018D0013AABE /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2D0840A42A0502770013AABE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2D0840A82A05031D0013AABE /* Home.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2D0840A52A05027E0013AABE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2D0840A62A05028E0013AABE /* Promotion.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,8 +147,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D0840A32A0502190013AABE /* Assets.xcassets in Resources */,
 				2D08409C2A05018D0013AABE /* Preview Assets.xcassets in Resources */,
-				2D0840992A05018D0013AABE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +161,8 @@
 			files = (
 				2D0840972A05018B0013AABE /* ContentView.swift in Sources */,
 				2D0840952A05018B0013AABE /* SwiftUI_GooeyCellLiquidAnimationApp.swift in Sources */,
+				2D0840A92A05031D0013AABE /* Home.swift in Sources */,
+				2D0840A72A05028E0013AABE /* Promotion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
