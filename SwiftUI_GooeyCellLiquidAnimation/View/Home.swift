@@ -71,11 +71,13 @@ struct GooeyCell: View {
 
     // Animation Properties
     @State var offsetX: CGFloat = 0
+    @State var cardOffsetX: CGFloat = 0
 
+    @State var finishAnimation: Bool = false
     var body: some View {
         ZStack(alignment: .trailing) {
 
-            CanvasView()
+            LiquidCanvasView()
 
             HStack {
                 VStack(alignment: .leading, spacing: 12) {
@@ -113,7 +115,7 @@ struct GooeyCell: View {
                     .fill(.white.opacity(0.7))
             )
             .padding(.horizontal, 15)
-            .offset(x: offsetX)
+            .offset(x: cardOffsetX)
             .gesture(
                 DragGesture()
                     .onChanged({ value in
@@ -124,10 +126,28 @@ struct GooeyCell: View {
 
                       //  translation = (-translation < cardWidth ? translation : -cardWidth)
                         offsetX = translation
+                        cardOffsetX = offsetX
                     }).onEnded({ value in
 
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            offsetX = 0
+                        if -value.translation.width > (screenSize().width * 0.6) {
+                            // 左半分以上 Swipeした場合、
+                            //振動させる
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            finishAnimation = true
+
+                            // Moving Card Outside of Screen.
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                cardOffsetX = -screenSize().width
+                            }
+
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                onDelete()
+                            }
+                        } else {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                offsetX = .zero
+                                cardOffsetX = .zero
+                            }
                         }
                     })
             )
@@ -135,13 +155,13 @@ struct GooeyCell: View {
     }
 
     @ViewBuilder
-    func CanvasView() -> some View {
-        Canvas { ctx, size in
-            ctx.addFilter(.alphaThreshold(min: 0.5, color: Color("Green")))
-            ctx.addFilter(.blur(radius: 5))
+    func LiquidCanvasView() -> some View {
+        Canvas { context, size in
+            context.addFilter(.alphaThreshold(min: 0.5, color: Color("Green")))
+            context.addFilter(.blur(radius: 5))
 
-            ctx.drawLayer { layer in
-                if let resolvedView = ctx.resolveSymbol(id: 1) {
+            context.drawLayer { layer in
+                if let resolvedView = context.resolveSymbol(id: 1) {
                     layer.draw(resolvedView, at: CGPoint(x: size.width / 2, y: size.height / 2))
                 }
             }
@@ -149,22 +169,64 @@ struct GooeyCell: View {
             GooeyView()
                 .tag(1)
         }
+        // 丸い背景の上に [x] アイコンを載せる
+        .overlay(alignment: .trailing) {
+
+            let cellWidth = screenSize().width * 0.8
+            let scale = offsetX / cellWidth
+
+            Image(systemName: "xmark")
+                .fontWeight(.semibold)
+                .foregroundColor(.white)
+                // xボタンを丸の真ん中にするために 8ずらす
+                .offset(x: 8)
+                .frame(width: 42, height: 42)
+                .offset(x: 42)
+                // 42隠した分、scale (0 ~ 1) * 42 で丸いやつを正常な位置にoffsetさせる
+                .offset(x: scale * 42)
+                .offset(x: offsetX * 0.2)
+
+                // MARK: 左画面外へ xを飛ばす処理
+                // 左へスケールを小さくさせる
+                .scaleEffect(finishAnimation ? 0.1 : 1, anchor: .leading)
+                // drag半分以上 onEndedした場合、[x] を左画面の外へ飛ばす
+                .offset(x: finishAnimation ? -screenSize().width : 0)
+                // [x]を 右から左の恥まで いい感じにanimationさせるために "Shape"イメージと分ける
+                .animation(.interactiveSpring(response: 0.6, dampingFraction: 1, blendDuration: 1), value: finishAnimation)
+
+        }
+
     }
 
     @ViewBuilder
     func GooeyView() -> some View {
 
         let cellWidth = screenSize().width * 0.8
-        let scale = offsetX / cellWidth
+        let scale = finishAnimation ? 0 : offsetX / cellWidth
+
         Image("Shape")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(height: 100)
             .scaleEffect(x: -scale, anchor: .trailing)
+            .animation(.interactiveSpring(), value: finishAnimation)
             .overlay(alignment: .trailing, content: {
                 Circle()
                     .frame(width: 42, height: 42)
+                    // 丸いやつを画面の右端に隠しておく
+                    .offset(x: 42)
+                    // 42隠した分、scale (0 ~ 1) * 42 で丸いやつを正常な位置にoffsetさせる
+                    .offset(x: scale * 42)
                     .offset(x: offsetX * 0.2)
+
+                    // MARK: 左画面外へ Circleを飛ばす処理
+                     // 左へスケールを小さくさせる
+                    .scaleEffect(finishAnimation ? 0.1 : 1, anchor: .leading)
+                    // drag半分以上 onEndedした場合、丸い背景を左画面の外へ飛ばす
+                    .offset(x: finishAnimation ? -screenSize().width : 0)
+
+                    // 丸い背景を 右から左の恥まで いい感じにanimationさせるために "Shape"イメージと分ける
+                    .animation(.interactiveSpring(response: 0.6, dampingFraction: 1, blendDuration: 1), value: finishAnimation)
             })
             .frame(maxWidth: .infinity, alignment: .trailing)
             .offset(x: 8)
