@@ -26,7 +26,13 @@ struct Home: View {
 
                 ForEach(promotions) { promotion in
                     GooeyCell(promotion: promotion) {
+                        // onDeleteが呼ばれた場合、セルを削除する
 
+                        // withAnimation と remove(at:) 両方とも 戻り値を返しているため、どちらかを捨てないと
+                        // Ambiguous use of 〜〜という エラーになる
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                           let _ = promotions.remove(at: indexOf(promotion: promotion))
+                        }
                     }
                 }
             }
@@ -55,6 +61,13 @@ struct Home: View {
                     .foregroundColor(Color("Green"))
             }
         }
+    }
+
+    func indexOf(promotion: Promotion) -> Int {
+        if let index = promotions.firstIndex(where: { $0.id == promotion.id} ) {
+            return index
+        }
+        return 0
     }
 }
 
@@ -115,6 +128,8 @@ struct GooeyCell: View {
                     .fill(.white.opacity(0.7))
             )
             .padding(.horizontal, 15)
+            .opacity(1.0 - (-offsetX / screenSize().width))
+            .blur(radius: (-offsetX / screenSize().width) * 2)
             .offset(x: cardOffsetX)
             .gesture(
                 DragGesture()
@@ -127,6 +142,7 @@ struct GooeyCell: View {
                       //  translation = (-translation < cardWidth ? translation : -cardWidth)
                         offsetX = translation
                         cardOffsetX = offsetX
+
                     }).onEnded({ value in
 
                         if -value.translation.width > (screenSize().width * 0.6) {
