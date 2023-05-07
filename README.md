@@ -1,5 +1,5 @@
 # SwiftUI_GooeyCellLiquidAnimation
-### 左スワイプでセルを削除する際、xボタンが 粘着のようなアニメーションを表現
+### iOS15から利用できるCanvas Viewを使って、左スワイプでセルを削除する際、xボタンが 粘着のようなアニメーションを表現
 
 参考にした動画
 https://www.youtube.com/watch?v=p8GfGbMPvEs
